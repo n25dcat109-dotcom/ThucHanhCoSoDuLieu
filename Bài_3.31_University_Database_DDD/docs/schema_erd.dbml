@@ -1,0 +1,85 @@
+// Database Definition Language Markup (DBML)
+// Project: UNIVERSITY Database (Bài 3.16 / 3.31)
+
+Table DEPARTMENT {
+  dept_code int [pk]
+  dept_name varchar [unique]
+  office varchar
+  phone varchar
+  college varchar
+}
+
+Table STUDENT {
+  student_number int [pk, increment]
+  ssn varchar [unique]
+  fname varchar
+  mname varchar
+  lname varchar
+  dob date
+  sex char
+  class_level varchar
+  degree_program varchar
+  curr_street varchar
+  curr_city varchar
+  curr_state varchar
+  curr_zip varchar
+  curr_phone varchar
+  perm_street varchar
+  perm_city varchar
+  perm_state varchar
+  perm_zip varchar
+  perm_phone varchar
+  major_dept_code int
+  minor_dept_code int
+}
+
+Table COURSE {
+  course_number varchar [pk]
+  course_name varchar
+  description text
+  credits int
+  level int
+  dept_code int
+}
+
+Table SECTION {
+  sec_id int [pk, increment]
+  course_number varchar
+  sec_number int
+  semester varchar
+  year int
+  instructor_name varchar
+}
+
+Table ATTENDANCE {
+  student_number int [pk]
+  start_date date [pk]
+  end_date date
+  college_name varchar
+}
+
+Table PREV_DEGREE {
+  student_number int [pk]
+  start_date date [pk]
+  degree_name varchar [pk]
+  month_awarded int
+  year_awarded int
+}
+
+Table PREV_TRANSCRIPT {
+  student_number int [pk]
+  start_date date [pk]
+  course_name varchar [pk]
+  semester varchar
+  year int
+  grade varchar
+}
+
+// Foreign Key Relationships
+Ref: STUDENT.major_dept_code >? DEPARTMENT.dept_code
+Ref: STUDENT.minor_dept_code >? DEPARTMENT.dept_code
+Ref: COURSE.dept_code >? DEPARTMENT.dept_code
+Ref: SECTION.course_number >? COURSE.course_number
+Ref: ATTENDANCE.student_number - STUDENT.student_number
+Ref: PREV_DEGREE.(student_number, start_date) <> ATTENDANCE.(student_number, start_date)
+Ref: PREV_TRANSCRIPT.(student_number, start_date) <> ATTENDANCE.(student_number, start_date)
