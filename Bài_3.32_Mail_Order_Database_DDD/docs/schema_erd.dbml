@@ -1,0 +1,53 @@
+Table zip_code {
+  zip_code varchar [pk]
+  city varchar
+  state varchar
+}
+
+Table employee {
+  emp_no int [pk, increment]
+  fname varchar [not null]
+  lname varchar [not null]
+  zip_code varchar [not null]
+}
+
+Table customer {
+  cust_no int [pk, increment]
+  fname varchar [not null]
+  lname varchar [not null]
+  zip_code varchar [not null]
+}
+
+Table part {
+  part_no int [pk, increment]
+  part_name varchar [not null]
+  price decimal [not null]
+  qty_in_stock int [not null]
+}
+
+Table orders {
+  order_no int [pk, increment]
+  receipt_date date [not null]
+  expected_ship_date date
+  actual_ship_date date
+  cust_no int [not null]
+  emp_no int [not null]
+}
+
+Table order_detail {
+  order_no int [not null]
+  part_no int [not null]
+  quantity int [not null]
+
+  Indexes {
+    (order_no, part_no) [pk]
+  }
+}
+
+// Relationships
+Ref: employee.zip_code > zip_code.zip_code
+Ref: customer.zip_code > zip_code.zip_code
+Ref: orders.cust_no > customer.cust_no
+Ref: orders.emp_no > employee.emp_no
+Ref: order_detail.order_no > orders.order_no
+Ref: order_detail.part_no > part.part_no
